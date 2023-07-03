@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+{% endblock head %}
+
+{% block schema %}
+
+{% endblock schema %}
+
+{% block style %}
+<style>
+    .w-70{
+        width:73% !important;
+    }
+    .docwidth{
+        width:20vw !important;
+    }
+    @media only screen and (min-device-width: 320px) and (max-device-width: 800px) {
+        .centerMobileOnly {
+          text-align: center !important;
+        }
+        .mobiscreenview{
+            width:90vw !important;
+        }
+        .mobiscreentext{
+            width:80vw !important;
+        }
+      }
+    .contimg{
+        background-color: white;
+        float: left;
+        padding: 10px;
+        border: 15px solid var(--gray-bg-dark);
+        position: relative;
+        z-index: 10;
+    }
+    .contimg:after {
+        background-color: #f8f9fa;
+        content: '';
+        display: block;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        z-index: -1;
+    }
+    .round5{
+        border-radius: 5px;
+    }
+</style>
+{% endblock style %}
+
+
+{% block body %}
+
+<div class="w-75 mx-auto">
+
+    <p class="w-75 text-center mx-auto">{{customdata.aboutDescript|safe}}</p>
+</div>
+<div class="about-content d-flex flex-wrap py-2" style="background-color:#f7fcfc;">
+    {% for i in docdata %}
+        <div class="mx-auto my-2 round5 bg-light docwidth mobiscreentext" style="overflow:hidden;background-color:var(--gray-bg-light);box-shadow: 0px 2px 15px rgba(63, 187, 192, 0.1);
+    }">
+            {% if i.image %}
+            <img class="docwidth mobiscreentext" src="{{i.image.url}}" alt="">
+            {% elif i.gender == "male" %}
+            <img class="docwidth mobiscreentext" src="{% static 'default_male_doctor_profile_pic.png' %}" alt="">
+            {% else %}
+            <img class="docwidth mobiscreentext" src="{% static 'default_female_doctor_profile_pic.png' %}" alt="">
+            {% endif %}
+            <h3 class="text-center my-1">{{i.name}}</h3>
+            <h6 class="text-center px-2 px-md-0">{{i.job_title}}</h6>
+            <p class="round-icon mt-2 text-center">
+            {% for social in i.social_links.all %}
+					<a class="mr-1" target="_blank" href="{{social.url}}">
+						<i class="fab fa-{{social.name}}"></i>
+					</a>
+			{% endfor %}
+            </p>
+        </div>
+    {% endfor %}
+
+    {% if is_paginated %}
+        <div class="wrapper">
+            <nav>
+                <ul class="d-flex justify-content-center p-0">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item p-2"><a class="page-links"
+                            href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+                    {% endif %}
+                    {% for i in page_obj.paginator.page_range %}
+                    <li class="page-item p-2"><a class="page-links" href="?page={{i}}">{{i}}</a></li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item p-2"><a class="page-links" href="?page={{page_obj.next_page_number}}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
+</div>
+{% endblock body %}
+
+
+{% block script %}
+{% endblock script %}

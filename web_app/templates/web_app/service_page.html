@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block schema %}
+
+<script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":[
+        "WebPage",
+        "Service"
+    ],
+    "serviceType":"{{service_obj.type}}",
+    "@id":"{{request.build_absolute_uri}}",
+    "name":"{{service_obj.name}}",
+    "additionalType":"{{service_obj.additional_type}}",
+    "brand":"{{service_obj.brand}}",
+    "description":"{{service_service_obj.description}}",
+    {% if service_obj.disambiguating_description %}"disambiguatingDescription":"{{service_obj.disambiguating_description}}",{% endif %}
+    "image":{
+        "@type":"ImageObject",
+        "url":"{{service_obj.image.url}}",
+        "caption":"{{service_obj.image_caption}}"
+    },
+    "potentialAction":"{{service_obj.potential_action}}",
+    "provider": {
+        "@id": "{{provider}}"
+    },
+    "url":"{{request.build_absolute_uri}}",
+
+    {% if service_obj.serviceabout_set.all %}
+    "about":[
+        {% for about in service_obj.serviceabout_set.all %}
+        {
+            "@type":"{{about.type}}",
+            "name":"{{about.name}}",
+            "sameAs":"{{about.same_as}}"
+        }
+        {% if forloop.last %} {% else %},{% endif %}
+        {% endfor %}
+    ],
+    {% endif %}
+
+    {% if service_obj.servicementions_set.all %}
+    "mentions":[
+        {% for mention in service_obj.servicementions_set.all %}
+        {
+            "@type":"{{mention.type}}",
+            "name":"{{mention.name}}",
+            "sameAs":"{{mention.same_as}}"
+        }{% if forloop.last %} {% else %},{% endif %}
+        {% endfor %}
+        
+    ],
+    {% endif %}
+
+    "reviewedBy":{
+        "@type": "Person",
+        "@id": "{% url 'web_app:doctor_url' service_obj.reviewed_by.slug %}"
+    },
+    "isPartOf":"{{service_obj.is_part_of}}"
+}</script>
+
+{% endblock schema %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/services.css' %}">
+{% endblock style %}
+
+
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-4 order-lg-1 order-2 mt-lg-0 mt-5">
+            <ul id="all-services">
+                {% for service in all_services %}
+                    <a href="{% url 'web_app:services' service.slug %}" style="text-decoration: none;">
+                    {% if service.slug == service_name %}
+                        <li class="primary-theme card-effect">
+                            {{service.name}}
+                            <i class="float-right mt-1 fas fa-chevron-right"></i>
+                        </li>
+                    {% else %}
+                        <li class="card-effect">
+                            {{service.name}}
+                            <i class="float-right mt-1 fas fa-chevron-right"></i>
+                        </li>
+                    {% endif %}
+                    </a>
+                {% endfor %}
+            </ul>
+
+            <div class="card-effect mt-5 py-5" style="color: var(--primary-bg);">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <i class="fas fa-4x fa-headset"></i>
+                    </div>
+                    <div class="col-auto font-weight-bold">
+                        <span>Emergency Cases</span>
+                        <h2>{{contact_number}}</h2>
+                    </div>
+                </div>
+                <a class="btn btn-default w-100 primary-theme mt-3" href="/contact-us/" role="button">Contact Us</a>
+            </div>
+
+        </div> <!-- col -->
+        <div class="col-lg-8 order-lg-2 order-1">
+            <div class="img-bg-div" style="background-image: url('{{service_obj.image.url}}');"></div>
+            <br>
+            {{service_obj.content|safe}}
+        </div> <!-- col -->
+    </div> <!-- row -->
+</div> <!-- container -->
+{% endblock body %}
+
+
+{% block script %}
+{% endblock script %}

@@ -1,0 +1,218 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="{{request.scheme}}://{{request.get_host}}{{site_favicon}}">
+    <link rel="canonical" href="{{request.build_absolute_uri}}">
+    <!-- COMMON TAGS -->
+    <title>{{meta_title}} - {{site_url}}</title>
+    <!-- Search Engine -->
+    <meta name="description" content="{{meta_desc}}">
+    <meta name="image" content="{{request.scheme}}://{{request.get_host}}{{meta_img_url}}">
+    <!-- Schema.org for Google -->
+    <meta itemprop="name" content="{{meta_title}} - {{site_url}}">
+    <meta itemprop="description" content="{{meta_desc}}">
+    <meta itemprop="image" content="{{request.scheme}}://{{request.get_host}}{{meta_img_url}}">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{meta_title}} - {{site_url}}">
+    <meta name="twitter:description" content="{{meta_desc}}">
+    <meta name="twitter:image:src" content="{{request.scheme}}://{{request.get_host}}{{meta_img_url}}">
+    <!-- Twitter - Article -->
+    <!-- Open Graph general (Facebook, Pinterest & Google+) -->
+    <meta name="og:title" content="{{meta_title}} - {{site_url}}">
+    <meta name="og:description" content="{{meta_desc}}">
+    <meta name="og:image" content="{{request.scheme}}://{{request.get_host}}{{meta_img_url}}">
+    <meta name="og:url" content="{{request.build_absolute_uri}}">
+    <meta name="og:site_name" content="{{site_name}}">
+    <meta name="og:type" content="article">
+    <!-- Open Graph - Article -->
+
+    {% block head %}
+    {% endblock head %}
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    {% block style %}
+    {% endblock style %}
+
+    <!-- Schema -->
+    {% block schema %}
+    {% endblock schema %}
+
+    <!-- Script -->
+    {% if custom_site_content_obj.script %}
+    {{custom_site_content_obj.script|safe}}
+    {% endif %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark secondary-theme">
+        <div class="container-fluid">
+            <span class="navbar-brand">
+                <a href="/">
+                    {% if custom_site_content_obj.nav_brand_html %}
+                        {{custom_site_content_obj.nav_brand_html|safe}}
+                    {% endif %}
+                </a>
+            </span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+                aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                {% if custom_site_content_obj.nav_html %}
+                    {{custom_site_content_obj.nav_html|safe}}
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="m-0 p-0 text-center text-light small-heads" style="background-color:var(--primary-bg)">{{customdata.notice|safe}}</div>
+    
+    {% if request.path != "/" %}
+    <div class="cover-img-bg-div" style="background-image: url('{{top_img.url}}');">
+        <h1 class="title">{{cover_img_title}}</h1>
+    </div>
+    {% endif %}
+
+    <div style="min-height: 70vh;">
+
+    {% block body %}
+    {% endblock body %}
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer class="text-lg-start primary-theme">
+
+        {% if custom_site_content_obj.footer_html %}
+            {{custom_site_content_obj.footer_html|safe}}
+        {% endif %}
+        
+        <section class="pt-4"> 
+            <div class="container">
+                <!-- Grid row -->
+                <div class="row">
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                        <h6 class="text-center text-uppercase fw-bold mb-4">
+                            Office Hours
+                        </h6>
+                        <table style="margin: auto;">
+                            <tbody>
+                                {% for i in oh %}
+                                <tr>
+                                    <td style="width:100px;">{{i.day}}</td>
+                                    <td>{{i.timming|safe}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Grid column -->
+
+
+                     <!-- Grid column -->
+                     <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                        <h6 class="text-center text-uppercase fw-bold mb-4">
+                            Our Services
+                        </h6>
+                        <table style="margin: auto;">
+                            <tbody>
+                                {% for i in six_services_obj %}
+                                <tr>
+                                    <td><a href="{% url 'web_app:services' i.slug %}" target="_blank"  class="text-white">{{i.name}}</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Grid column -->
+
+                    
+                      <!-- Grid column -->
+                      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                        <h6 class="text-center text-uppercase fw-bold mb-4">
+                            Recent Articles
+                        </h6>
+                        <table style="margin: auto;">
+                            <tbody>
+                                {% for article in recent_articles %}
+                                <tr>
+                                    <td><a href="{% url 'guides:blog_url' article.url_slug %}" target="_blank"  class="text-white">{{article.meta_title}}</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                        <h6 class="text-center text-uppercase fw-bold mb-4">Contact Us</h6>
+
+                         <table style="margin: auto;">
+                            <tbody>
+                                {% for i in add %}
+                                <tr>
+                                    <td style="vertical-align: top;width: 21px;"><i class="bi bi-geo-alt"></i></td>
+                                    <td>{{i.streetAddress}}, {{i.addressLocality}}
+                                        {{i.addressRegion}}, {{i.addressCountry}}, {{i.postalCode}}</td>
+                                </tr>
+                                {% endfor %}
+
+                                {% for i in ct %}
+                                <tr>
+                                    <td style="vertical-align: top;width: 21px;"><i class="bi bi-telephone"></i></td>
+                                    <td>{{i.contactType}}<br>{{i.telephone}}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td style="vertical-align: top;width: 21px;"><i class="bi bi-pin-map"></i></i></td>
+                                    <td style="word-break: break-all;"><a href="{{map_id}}" target="_blank"  class="text-white">Locate us on Google Maps</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
+        <!-- Section: Links  -->
+
+        {% if custom_site_content_obj.social_links_html %}
+            {{custom_site_content_obj.social_links_html|safe}}
+        {% endif %}
+
+        <!-- Copyright -->
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            {{custom_site_content_obj.copyright_text|safe}}
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+
+    {% block script %}
+    {% endblock script %}
+</body>
+
+</html>

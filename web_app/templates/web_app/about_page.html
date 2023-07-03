@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/about_page.css' %}">
+{% endblock style %}
+
+
+{% block schema %}
+{% if businessSchema %}{{businessSchema|safe}}{% endif %}
+{% endblock schema %}
+
+
+{% block body %}
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row gx-5">
+            <div class="col-lg-5 mb-5 mb-lg-0 display-none" style="min-height: 500px;">
+                <div class="position-relative h-100">
+                    <img class="position-absolute w-100 h-100 rounded" src="{{customdata.displayimage.url}}"
+                        style="object-fit: cover;">
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <p>{{customdata.aboutDescript|safe}} </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mx-auto py-4 text-center">
+    {{customdata.meetteam|safe}}
+</div>
+
+
+<div class="pb-2" style="background-color:#f7fcfc;">
+<div class="about-content w-75 mobiscreenview d-flex flex-wrap py-2 mx-auto justify-content-center" >
+    {% for i in docdata %}
+
+    <div class="col-lg-5 mx-3 mt-4 shadow p-3 mb-3 bg-body-tertiary rounded" style="background-color:#ffffff;">
+        <div class="member d-flex centerMobileOnly mobiflex-wrap align-items-start">
+          <div class="pic centerMobileOnly">
+            {% if i.image %}
+            <img  src="{{i.image.url}}" class="img-fluid" alt="">
+            {% elif i.gender == "male" %}
+            <img  src="{% static 'default_male_doctor_profile_pic.png' %}" class="img-fluid" alt="">
+            {% else %}
+            <img  src="{% static 'default_female_doctor_profile_pic.png' %}" class="img-fluid" alt="">
+            {% endif %}</div>
+          <div class="member-info px-3 centerMobileOnly">
+            <h4>{{i.name}}</h4>
+            <span>{{i.job_title}}</span>
+            <div class="social round-icon mt-2">
+                {% for social in i.social_links.all %}
+					<a class="mr-1" target="_blank" href="{{social.url}}">
+						<i class="fab fa-{{social.name}}"></i>
+					</a>
+			    {% endfor %}
+            </div>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+        {% if is_paginated %}
+            <div class="wrapper mx-auto" style="width:max-content;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.previous_page_number}}"aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% for i in page_obj.paginator.page_range %}
+                        <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.next_page_number}}" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                            </a>
+                          </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
+    </div>
+<div class="w-75 mobiscreenview mx-auto"> {{customdata.afterTeamContent|safe}}</div>
+{% endblock body %}
+
+
+{% block script %}
+{% endblock script %}

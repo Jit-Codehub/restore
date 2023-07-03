@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block schema %}
+{% if web_page_schema %}{{web_page_schema|safe}}{% endif %}
+{% endblock schema %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock style %}
+
+
+{% block body %}
+<div class="container mt-4">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb custom">
+			<li class="breadcrumb-item"><a href="/">Home</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'guides:home_url' %}">Articles</a></li>
+			{% if blog_obj.category %}
+			<li class="breadcrumb-item"><a href="{% url 'guides:category_url' blog_obj.category_slug %}">{{blog_obj.category}}</a></li>
+			{% endif %}
+			<li class="breadcrumb-item active" aria-current="page">{{meta_title}}</li>
+		</ol>
+	</nav>
+
+	<div class="row">
+		<div class="col-lg-7 col-xl-8 mb-3">
+			<h1>{{blog_obj.meta_title}}</h1>
+			<small>{{blog_obj.created_at|date:"F d, Y"}}</small>
+			<p class="mb-0 pb-0">
+				Medically reviewed by
+				<a href="{% url 'web_app:doctor_url' blog_obj.reviewed_by.slug %}"
+					target="_blank">{{blog_obj.reviewed_by}}</a>
+			</p>
+			<p>
+				By
+				<a href="{% url 'web_app:doctor_url' blog_obj.created_by.slug %}"
+					target="_blank">{{blog_obj.created_by}}</a>
+			</p>
+
+			<div class="guides">
+				{{blog_obj.content|safe}}
+			</div>
+
+
+			{% if blog_obj.citations.all %}
+			<h3><b>References:</b></h3>
+			<div class="references">
+				<ol>
+					{% for citation in blog_obj.citations.all %}
+					<li>
+						<span>{{citation.headline}}</span>
+						<br>
+						<cite>
+							<a href="{{citation.url}}" target="_blank"
+								rel="follow noopener noreferrer">{{citation.url}}</a>
+						</cite>
+					</li>
+					{% endfor %}
+				</ol>
+			</div>
+			{% endif %}
+
+		</div> <!-- Left side div -->
+
+		<div class="recent-blogs-links col-lg-5 col-xl-4">
+			{% include 'guides/recent_blogs_rightside.html' %}
+		</div> <!-- Right side div -->
+	</div> <!-- row -->
+</div>
+{% endblock body %}

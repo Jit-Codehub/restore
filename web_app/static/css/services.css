@@ -1,0 +1,36 @@
+.img-bg-div {
+    height: 450px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+#all-services {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.card-effect {
+    padding: .75rem 1.25rem;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.1);
+}
+
+#all-services li {
+    cursor: pointer;
+    color: var(--primary-bg);
+    margin-bottom: 2px;
+    border-radius: 4px;
+}
+
+#all-services li:hover {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+@media screen and (max-width: 768px) {
+    .img-bg-div {
+        height: 300px;
+    }
+}

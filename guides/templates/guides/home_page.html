@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock style %}
+
+
+{% block body %}
+<div class="container mt-4">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb custom">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            {% if category_slug %}
+            <li class="breadcrumb-item"><a href="{% url 'guides:home_url' %}">Articles</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{category}}</li>
+            {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Articles</li>
+            {% endif %}
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-7 col-xl-8">
+            {% for blog in page_obj %}
+            <div class="blog mb-5">
+                <a href="{{blog.link}}">
+                    <h1>{{blog.title}}</h1>
+                </a>
+                <div class="row mb-3 mt-2 blog-icons">
+                    <div class="col-auto">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="pl-1">{{blog.date.date}}</span>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user"></i>
+                        <a class="hover-primary-color" href="{% url 'web_app:doctor_url' blog.author.slug %}"
+                            class="pl-1">{{blog.author.name}}</a>
+                    </div>
+                    {% if blog.category %}
+                    <div class="col-auto">
+                        <i class="fas fa-tag"></i>
+                        <a class="hover-primary-color" href="{% url 'guides:category_url' blog.category_slug %}" class="pl-1">{{blog.category}}</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <a href="{{blog.link}}">
+                    <div class="img-bg-div" style="background-image: url('{{blog.img}}');"></div>
+                </a>
+                <p>{{blog.description|truncatechars:255}}</p>
+            </div>
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+            <div class="d-flex blog-pagination mb-5">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-default btn-outline-primary-theme" role="button">
+                    <i class="fas fa-chevron-left"></i>
+                    Older Posts
+                </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-default btn-outline-primary-theme ml-auto" role="button">
+                    Newer Posts 
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div> <!-- Left side div -->
+
+        <div class="recent-blogs-links col-lg-5 col-xl-4">
+            {% include 'guides/recent_blogs_rightside.html' %}
+        </div> <!-- Right side div -->
+    </div> <!-- row -->
+</div>
+{% endblock body %}

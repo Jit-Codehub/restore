@@ -1,0 +1,66 @@
+.w-70{
+    width:73% !important;
+}
+.w-30{
+    width:35% !important;
+}
+.docwidth{
+    width:20vw !important;
+}
+.pic{
+    overflow:hidden;
+    width: 180px !important;
+    height: 180px !important;
+    border-radius: 180px;
+
+    
+}
+.img-fluid{
+    width: 180px !important;
+    height: 180px !important;
+    object-fit:fill;
+
+}
+@media only screen and (min-device-width: 320px) and (max-device-width: 800px) {
+    .centerMobileOnly {
+      text-align: center !important;
+      margin:auto;
+    }
+    .mobiscreenview{
+        width:90vw !important;
+    }
+    .mobiscreentext{
+        width:80vw !important;
+    }
+    .mobiflex-wrap{
+        flex-wrap: wrap;
+    }
+  }
+.contimg{
+    background-color: white;
+    float: left;
+    padding: 10px;
+    border: 15px solid var(--gray-bg-dark);
+    position: relative;
+    z-index: 10;
+}
+.contimg:after {
+    background-color: #f8f9fa;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    z-index: -1;
+}
+.round5{
+    border-radius: 5px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .display-none {
+      display: none;
+    }
+  }

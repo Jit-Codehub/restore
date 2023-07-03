@@ -1,0 +1,100 @@
+.recent-blogs-links ul {
+    list-style: none;
+}
+
+.recent-blogs-links a{
+    color: var(--primary-bg);
+}
+
+.guides img {
+    width: 100% !important;
+    height: auto !important;
+}
+
+ul,
+ol {
+    list-style-position: inside;
+    padding: 0px;
+}
+
+cite {
+    font-style: normal !important;
+    display: inline-block;
+    margin: 3px 0;
+}
+
+
+.blog a {
+    text-decoration: none;
+    color: black;
+}
+
+.blog-icons i {
+    color: var(--primary-bg);
+}
+
+
+.blog .img-bg-div {
+    height: 400px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.card-effect {
+    padding: .75rem 1.25rem;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+#ul-categories li {
+    cursor: pointer;
+    margin-bottom: 2px;
+    border-radius: 4px;
+}
+
+#ul-categories li:hover {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+.hover-primary-color:hover{
+    color: var(--primary-bg);
+}
+
+.breadcrumb.custom{
+    /* background-color: transparent !important; */
+    padding: 10px !important;
+    border-left: 5px solid var(--primary-bg);
+    background-color: #f7f7f7;
+}
+
+.breadcrumb.custom li{
+    font-size: medium;
+}
+
+.breadcrumb.custom a{
+    color: var(--primary-bg);
+}
+
+.btn-outline-primary-theme{
+    background-color: var(--primary-text);
+    border-color: var(--primary-bg);
+    color: var(--primary-bg);
+}
+
+.btn-outline-primary-theme:hover{
+    background-color: var(--primary-bg);
+    border-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+@media screen and (max-width: 768px) {
+    .blog .img-bg-div {
+        height: 250px;
+    }
+
+    .blog-icons {
+        font-size: smaller;
+    }
+}

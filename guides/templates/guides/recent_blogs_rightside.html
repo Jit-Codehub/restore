@@ -1,0 +1,25 @@
+<h3 style="font-weight: 600;">Recent Articles</h3>
+<ul class="p-2">
+    {% for guide in latest_blogs %}
+    <li class="mb-3">
+        <a class="row no-gutters" href="{{guide.link}}">
+            <img class="pr-2 sm-img col-5" alt="{{guide.img_alt}}" src="{{guide.img}}">
+            <span class="col-7">{{guide.title|truncatechars:60}}</span>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+
+<br>
+<h3 style="font-weight: 600;">Categories</h3>
+<ul id="ul-categories" class="p-2">
+    {% for data in categories %}
+    <a href="{% url 'guides:category_url' data.category_slug %}">
+        <li class="card-effect">
+            <span>{{data.category}}</span>
+            <span style="font-size: small;">({{data.count}})</span>
+            <i class="fas fa-tag float-right mt-1"></i>
+        </li>
+    </a>
+    {% endfor %}
+</ul>
